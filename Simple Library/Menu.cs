@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Simple_Library
 {
+    /// <summary>
+    /// Allows for users to login and interact with the library.
+    /// </summary>
     internal static class Menu
     {
         /// <summary>
@@ -14,6 +17,8 @@ namespace Simple_Library
         /// </summary>
         public static void LogIn ()
         {
+            Borrower loggedUser = new Borrower();
+
             while (true)
             {
                 Console.Clear();
@@ -25,9 +30,7 @@ namespace Simple_Library
 
                 string userPassword = Console.ReadLine();
 
-                Borrower loggedUser = new Borrower();
-
-                foreach (Borrower user in Library.GetUserDatabase())
+                foreach (Borrower user in Library._database)
                 {
                     if (user.GetName().ToLower() == userName.ToLower() && user.GetPassword() == userPassword)
                     {
@@ -35,14 +38,19 @@ namespace Simple_Library
                         loggedUser = user;
                         break;
                     }
-                    else if (user.GetName().ToLower() != userName.ToLower())
-                        Console.WriteLine($"Username not found in the database");
-                    else if (user.GetName().ToLower() == userName.ToLower() && user.GetPassword() != userPassword)
-                        Console.WriteLine($"Wrong password for {userName}");
-                    Console.ReadKey();
                 }
 
-                MainMenu(loggedUser);
+                if (!(loggedUser.GetLogInStatus() == true))
+                {
+                    Console.WriteLine("Invalid Credentials");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("You logged in!");
+                    Console.ReadKey();
+                    MainMenu(loggedUser);
+                }
             }
         }
 
@@ -60,9 +68,10 @@ namespace Simple_Library
                                   $"2. Search for an author\n" +
                                   $"3. Show all books\n" +
                                   $"4. Borrow a book\n" +
-                                  $"5. Change password\n" +
-                                  $"6. Change name\n" +
-                                  $"7. Log Out");
+                                  $"5. Check borrowed books\n" +
+                                  $"6. Change username\n" +
+                                  $"7. Change password\n" +
+                                  $"8. Log Out");
 
                 Console.Write($"Choice: ");
 
@@ -73,21 +82,24 @@ namespace Simple_Library
         }
 
         /// <summary>
-        /// Performs a task chosen by the user from the main menu.
+        /// The choices the library offers.
         /// </summary>
         /// <param name="choice"></param>
-        private static void Choices(string choice, Borrower user)
+        /// <param name="borrower"></param>
+        private static void Choices(string choice, Borrower borrower)
         {
             switch (choice)
             {
-                case "1": Console.Write($"Which book do you want to find?");
+                case "1":
+                    Console.Write($"Which book do you want to find?");
 
                     Library.Search(Console.ReadLine(), 'N');
                     break;
 
-                case "2": Console.Write($"Which author do you want to find?");
+                case "2":
+                    Console.Write($"Which author do you want to find?");
 
-                    Library.DisplayBooksByAuthor(Library.Search(Console.ReadLine(), 'A'));
+                    Library.Search(Console.ReadLine(), 'A');
                     break;
 
                 case "3":
@@ -95,26 +107,34 @@ namespace Simple_Library
                     Library.DisplayLibrary();
                     break;
 
-                case "4": Console.Write($"Which book do you want to borrow?");
+                case "4":
+                    Console.Write($"Which book do you want to borrow?");
 
-                    user.Borrow(Console.ReadLine());
+                    borrower.Borrow(Console.ReadLine());
                     break;
 
-                case "5": Console.Write($"New Username: ");
+                case "5":
 
-                    user.SetName(Console.ReadLine());
-                    Console.WriteLine($"Successfully changed it to {user.GetName()}");
+                    borrower.DisplayBorrowedBooks();
                     break;
 
-                case "6": Console.Write($"New Password: ");
+                case "6":
+                    Console.Write($"New Username: ");
 
-                    user.SetPassword(Console.ReadLine());
-                    Console.WriteLine($"Successfully changed it to {user.GetPassword()}");
+                    borrower.SetName(Console.ReadLine());
+                    Console.WriteLine($"Successfully changed it to {borrower.GetName()}");
                     break;
 
                 case "7":
+                    Console.Write($"New Password: ");
 
-                    user.SetLogInStatus(false);
+                    borrower.SetPassword(Console.ReadLine());
+                    Console.WriteLine($"Successfully changed it to {borrower.GetPassword()}");
+                    break;
+
+                case "8":
+
+                    borrower.SetLogInStatus(false);
                     Console.WriteLine($"You have logged out!");
                     break;
 

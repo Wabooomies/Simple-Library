@@ -16,18 +16,6 @@ namespace ConsoleApp4
         public static List<Book> _library = new List<Book>();
         public static List<Borrower> _database = new List<Borrower>();
 
-        /// <summary>
-        /// Controlled getting of the library property of the Library
-        /// </summary>
-        /// <returns></returns>
-        public static List<Book> GetLibrary () { return _library; }
-
-        // <summary>
-        /// Controlled getting of the database property of the Library
-        /// </summary>
-        /// <returns></returns>
-        public static List<Borrower> GetUserDatabase() { return _database; }
-
 
 
 
@@ -37,7 +25,7 @@ namespace ConsoleApp4
         /// </summary>
         public static void DisplayLibrary()
         {
-            List<Book> selection = Library.GetLibrary();
+            List<Book> selection = Library._library;
 
             Console.WriteLine("Here is our selection of books:");
             for (int i = 0; i < selection.Count; i++)
@@ -63,13 +51,11 @@ namespace ConsoleApp4
         /// Shows the works of the author.
         /// </summary>
         /// <param name="value"></param>
-        public static void DisplayBooksByAuthor(string author)
+        private static void DisplayBooksByAuthor(string author)
         {
             Console.WriteLine($"Here are {author}'s works!");
             foreach (Book book in _library)
-            {
-                Console.WriteLine(book.GetAuthor() == author);
-            }
+                Console.WriteLine(book.GetName());
         }
 
 
@@ -80,7 +66,7 @@ namespace ConsoleApp4
         /// Searches for a particular book or author. Put 'N' in the type argument to search for a name. Put 'A' in the type argument to search for an author.
         /// </summary>
         /// <param name="search"></param>
-        public static string Search(string search, char type)
+        public static void Search(string search, char type)
         {
             string value = "";
             bool found = false;
@@ -90,26 +76,30 @@ namespace ConsoleApp4
                 if (type == 'N')
                 {
                     value = book.GetName();
-
                     if (value.ToLower() == search.ToLower())
                     {
                         Console.WriteLine($"The book \"{value}\" was found");
                         found = true;
+                        break;
                     }
-
-                    if (found == false)
-                        Console.WriteLine($"The book \"{search}\" was not found");
-
-                    break;
                 }
                 else if (type == 'A')
                 {
                     value = book.GetAuthor();
-
+                    if (value.ToLower() == search.ToLower())
+                    {
+                        found = true;
+                        DisplayBooksByAuthor(value);
+                        break;
+                    }
+                    break;
                 }
             }
 
-            return value;
+            if (found == false && type == 'N')
+                Console.WriteLine($"The book \"{search}\" was not found");
+            else if (found == false && type == 'A')
+                Console.WriteLine($"The author \"{search}\" was not found");
         }
     }
 }

@@ -13,11 +13,11 @@ namespace Simple_Library
     /// </summary>
     public class Book
     {
-        private string _name;
-        private string _genre;
-        private string _author;
+        private string _name = "";
+        private string _genre = "";
+        private string _author = "";
 
-        private bool _borrowedStatus;
+        private bool _borrowedStatus = false;
 
         /// <summary>
         /// Create books.

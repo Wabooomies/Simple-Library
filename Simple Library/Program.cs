@@ -61,6 +61,7 @@ namespace Simple_Library
             Library._library.Add(new Book("Diary of a Wimpy Luis: 323 Aguirre Ave, Parañaque, Metro Manila", "Diary", "Luis"));
             Library._library.Add(new Book("Diary of a Wimpy Luis: Fernando Jalandoni Cawa", "Diary", "Luis"));
             Library._library.Add(new Book("Diary of a Wimpy Luis: Final Days", "Diary", "Luis"));
+
             Library._database.Add(new Borrower("George", "1"));
             Library._database.Add(new Borrower("Wally", "2"));
             Library._database.Add(new Borrower("Rey", "3"));
