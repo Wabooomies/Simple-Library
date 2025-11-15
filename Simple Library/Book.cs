@@ -16,6 +16,7 @@ namespace Simple_Library
         private string _name;
         private string _genre;
         private string _author;
+
         private bool _borrowedStatus;
 
         /// <summary>
@@ -24,11 +25,11 @@ namespace Simple_Library
         /// <param name="bookName"></param>
         /// <param name="bookGenre"></param>
         /// <param name="bookAuthorName"></param>
-        public Book(string bookName, string bookGenre, string bookAuthorName)
+        public Book(string name, string genre, string author)
         {
-            _name = bookName;
-            _genre = bookGenre;
-            _author = bookAuthorName;
+            _name = name;
+            _genre = genre;
+            _author = author;
             _borrowedStatus = false;
         }
 
